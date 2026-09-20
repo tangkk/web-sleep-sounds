@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="description" content="可选择长循环或实时生成的白噪声与自然声，支持独立混音、睡眠定时和设备同步。">
 <link rel="icon" href="./favicon.ico" sizes="any"><link rel="apple-touch-icon" href="./apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <header><div class="moon" aria-hidden="true">☾</div><div><h1>Sleep Sounds</h1><p class="sub">属于你的睡眠声景 · 循环与实时两种生成方式</p></div></header>
 <section class="panel player" aria-label="播放器"><div class="player-top"><div><p class="eyebrow">NOW PLAYING</p><p id="status" role="status">准备好，今晚睡个好觉</p></div><button id="play" type="button" aria-pressed="false">▶ 开始播放</button></div><div class="master"><label for="master">总音量</label><input id="master" type="range" min="0" max="100" value="55"><output id="master-value" for="master">55%</output></div><p class="timer-status" id="timer-status" aria-live="polite"></p></section>
 <h2>选择声音 · 自由混合</h2><div class="grid" id="sounds"></div>
-<h2>声音生成</h2><section class="panel tools" aria-label="声音生成设置"><label class="field" for="engine-mode">生成模式<select id="engine-mode"><option value="loop">循环音频（原始音色）</option><option value="realtime">实时生成（AudioWorklet）</option></select></label><label class="field" for="loop-seconds">循环长度<select id="loop-seconds"><option value="12">12 秒 · 原版</option><option value="30">30 秒 · 默认</option><option value="60">60 秒 · 更长</option></select></label><p id="mode-note" class="mode-note">循环模式：预生成随机音频并重复播放。较长循环需要更多内存；仅为已开启的声音生成音频。</p></section>
+<h2>声音生成</h2><section class="panel tools" aria-label="声音生成设置"><label class="field" for="engine-mode">生成模式<select id="engine-mode"><option value="loop">循环音频（原始音色）</option><option value="realtime">实时生成（AudioWorklet）</option></select></label><label class="field" id="loop-field" for="loop-seconds">循环长度<select id="loop-seconds"><option value="12">12 秒 · 原版</option><option value="30">30 秒 · 默认</option><option value="60">60 秒 · 更长</option></select></label><p id="mode-note" class="mode-note">循环模式：预生成随机音频并重复播放。较长循环需要更多内存；仅为已开启的声音生成音频。</p></section>
 <h2>睡眠设置</h2><section class="panel tools" aria-label="睡眠设置"><label class="field" for="timer">自动关闭（结束前渐弱 30 秒）<select id="timer"><option value="0">不设置</option><option value="15">15 分钟</option><option value="30">30 分钟</option><option value="45">45 分钟</option><option value="60">1 小时</option><option value="90">1.5 小时</option><option value="120">2 小时</option><option value="180">3 小时</option></select></label><button class="secondary" id="reset" type="button">恢复默认混音</button></section>
 <h2>设备同步</h2><section class="panel sync-panel" aria-label="设备同步"><p>不同设备输入相同同步码，即可同步每种声音的开关、音量、总音量与定时设置。播放状态、倒计时和生成模式保存在本机，不会远程自动播放。</p><label class="field" for="sync-code">同步码<input id="sync-code" class="sync-code" type="text" autocomplete="off" spellcheck="false" placeholder="输入你自己设置的同步码"></label><div class="sync-actions"><button id="sync-save" class="secondary" type="button">保存并同步</button><button id="sync-now" class="secondary" type="button">立即同步</button><button id="sync-off" class="secondary" type="button">关闭此设备同步</button></div><p id="sync-indicator" class="hint">未连接</p><div id="sync-status" class="sync-status" role="status" aria-live="polite"></div><p>同步码相当于访问凭据，请不要公开分享。未连接时设置仍只保存在本机；同步需要联网。</p></section>
 <footer>声音由浏览器 Web Audio API 生成；首次播放需要点击按钮。建议从低音量开始。实时模式要求浏览器支持 AudioWorklet；部分手机锁屏或省电时可能暂停网页音频。本应用不是医疗或助眠疗效保证。</footer>
@@ -57,8 +57,8 @@ $('reset').addEventListener('click',()=>{settings.master=defaults.master;for(con
 function updateUI(){
  $('master').value=settings.master;$('master-value').textContent=`${settings.master}%`;
  for(const d of definitions){const s=settings.sounds[d.id],t=$(`toggle-${d.id}`);$(`card-${d.id}`).classList.toggle('active',s.enabled);t.textContent=s.enabled?'已开启':'已关闭';t.setAttribute('aria-pressed',String(s.enabled));$(`level-${d.id}`).value=s.level;$(`value-${d.id}`).textContent=`${s.level}%`;}
- $('timer').value=String(settings.timer);$('engine-mode').value=prefs.mode;$('loop-seconds').value=String(prefs.seconds);$('loop-seconds').disabled=prefs.mode==='realtime';
- $('mode-note').textContent=prefs.mode==='loop'?'循环模式：预生成随机音频并重复播放；仅为已开启的声音生成音频。30 秒为默认，60 秒占用更多内存。':'实时模式：音频渲染线程持续生成新采样，保持原有滤波和调制音色，不使用固定音频循环。';
+ $('timer').value=String(settings.timer);$('engine-mode').value=prefs.mode;$('loop-seconds').value=String(prefs.seconds);$('loop-seconds').disabled=prefs.mode==='realtime';$('loop-field').hidden=prefs.mode==='realtime';
+ $('mode-note').textContent=prefs.mode==='loop'?'循环模式：预生成随机音频并重复播放；仅为已开启的声音生成音频。30 秒为默认，60 秒占用更多内存。':'实时模式：∞ 持续生成 · 无固定循环长度。AudioWorklet 在音频线程中持续计算新的采样。';
  $('play').textContent=playing?'Ⅱ 暂停播放':'▶ 开始播放';$('play').setAttribute('aria-pressed',String(playing));$('status').textContent=playing?(fading?'声音正在渐弱…':'声景播放中'):'准备好，今晚睡个好觉';
 }
 function updateAudio(){
