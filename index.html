@@ -3,54 +3,54 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#101b2b">
+  <meta name="theme-color" content="#ffffff">
   <meta name="description" content="无需下载音频，浏览器实时合成与混合睡眠噪声和自然声。">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>Sleep Sounds · 睡眠声景</title>
   <style>
-    :root { color-scheme: dark; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #101b2b; color: #edf5ff; font-synthesis: none; }
+    :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #fff; color: #111; font-synthesis: none; }
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; background: radial-gradient(ellipse at 70% -10%, #284461 0, transparent 55%), linear-gradient(160deg, #101b2b, #111927 75%); }
+    body { margin: 0; min-height: 100vh; background: #fff; color: #111; }
     button, select, input { font: inherit; }
     button { cursor: pointer; }
-    button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #a1e6df; outline-offset: 4px; }
+    button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #111; outline-offset: 4px; }
     .wrap { max-width: 890px; padding: 36px 20px 80px; margin: auto; }
     header { display: flex; align-items: center; gap: 15px; margin-bottom: 31px; }
-    .moon { font-size: 35px; width: 60px; height: 60px; border-radius: 19px; background: #283d53; display: grid; place-items: center; }
+    .moon { font-size: 35px; width: 60px; height: 60px; border-radius: 19px; background: #f3f3f3; display: grid; place-items: center; }
     h1 { font-size: clamp(26px, 5vw, 35px); letter-spacing: -.7px; margin: 0 0 5px; }
-    .sub, .hint { color: #a5b9cb; font-size: 14px; }
+    .sub, .hint { color: #555; font-size: 14px; }
     .sub { margin: 0; }
-    .panel { border: 1px solid #344659; background: #1a2a3bce; border-radius: 22px; box-shadow: 0 15px 45px #07101b40; }
+    .panel { border: 1px solid #ddd; background: #fff; border-radius: 22px; box-shadow: 0 5px 24px #00000008; }
     .player { padding: 27px; margin-bottom: 22px; }
     .player-top { display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
-    .eyebrow { color: #91aaaF; font-size: 13px; margin: 0 0 8px; }
+    .eyebrow { color: #555; font-size: 13px; margin: 0 0 8px; }
     #status { font-size: 19px; font-weight: 650; margin: 0; }
-    #play { min-width: 130px; padding: 15px 21px; border: 0; background: #9be6dd; color: #112c39; font-weight: 750; border-radius: 15px; }
-    #play:hover { background: #baf6ed; }
+    #play { min-width: 130px; padding: 15px 21px; border: 0; background: #111; color: #fff; font-weight: 750; border-radius: 15px; }
+    #play:hover { background: #333; }
     #play:disabled { opacity: .6; cursor: wait; }
     .master { display: grid; grid-template-columns: 90px 1fr 45px; align-items: center; gap: 13px; margin-top: 29px; }
-    input[type=range] { width: 100%; accent-color: #9be6dd; cursor: pointer; }
-    output { color: #c3d5e3; font-size: 13px; font-variant-numeric: tabular-nums; text-align: right; }
+    input[type=range] { width: 100%; accent-color: #111; cursor: pointer; }
+    output { color: #333; font-size: 13px; font-variant-numeric: tabular-nums; text-align: right; }
     h2 { font-size: 20px; margin: 31px 0 14px; }
     .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
     .sound { padding: 19px; transition: background .2s, border-color .2s; }
-    .sound.active { border-color: #6caeaa; background: #213d4b; }
+    .sound.active { border-color: #111; background: #f6f6f6; }
     .sound-head { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
     .sound-title { display: flex; align-items: center; gap: 11px; }
-    .emoji { font-size: 25px; width: 43px; height: 43px; border-radius: 13px; display: grid; place-items: center; background: #32475a; }
+    .emoji { font-size: 25px; width: 43px; height: 43px; border-radius: 13px; display: grid; place-items: center; background: #f1f1f1; }
     .name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
-    .detail { color: #adc0d0; font-size: 12px; line-height: 1.5; }
-    .toggle { flex: none; border: 1px solid #53697b; background: #2b4154; color: #d6e6ef; border-radius: 100px; min-width: 56px; padding: 7px 10px; font-size: 12px; }
-    .active .toggle { background: #a0e6db; color: #143640; border-color: #a0e6db; font-weight: 700; }
+    .detail { color: #555; font-size: 12px; line-height: 1.5; }
+    .toggle { flex: none; border: 1px solid #aaa; background: #fff; color: #111; border-radius: 100px; min-width: 56px; padding: 7px 10px; font-size: 12px; }
+    .active .toggle { background: #111; color: #fff; border-color: #111; font-weight: 700; }
     .level { display: grid; grid-template-columns: 1fr 38px; align-items: center; gap: 9px; margin-top: 21px; }
     .tools { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; padding: 21px; }
-    .field { display: flex; flex-direction: column; gap: 9px; color: #c4d4df; font-size: 13px; flex: 1; min-width: 170px; }
-    select { width: 100%; border: 1px solid #4b6173; background: #273b4e; color: #f0f6ff; padding: 12px; border-radius: 11px; }
-    .secondary { border: 1px solid #5b7181; border-radius: 11px; padding: 12px 16px; background: #2a3e50; color: #f0f6ff; }
-    .secondary:hover { background: #354f64; }
-    .timer-status { color: #a0e6db; min-height: 19px; margin: 12px 0 0; font-size: 13px; font-variant-numeric: tabular-nums; }
-    footer { color: #95aabb; font-size: 12px; line-height: 1.8; margin-top: 27px; }
+    .field { display: flex; flex-direction: column; gap: 9px; color: #333; font-size: 13px; flex: 1; min-width: 170px; }
+    select { width: 100%; border: 1px solid #aaa; background: #fff; color: #111; padding: 12px; border-radius: 11px; }
+    .secondary { border: 1px solid #aaa; border-radius: 11px; padding: 12px 16px; background: #fff; color: #111; }
+    .secondary:hover { background: #f3f3f3; }
+    .timer-status { color: #333; min-height: 19px; margin: 12px 0 0; font-size: 13px; font-variant-numeric: tabular-nums; }
+    footer { color: #555; font-size: 12px; line-height: 1.8; margin-top: 27px; }
     @media (max-width: 580px) { .wrap { padding: 27px 15px 65px; } .grid { grid-template-columns: 1fr; } .player { padding: 21px; } .master { grid-template-columns: 64px 1fr 38px; gap: 9px; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
   </style>
