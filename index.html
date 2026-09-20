@@ -38,11 +38,11 @@ const definitions=[
 {id:'fire',icon:'✦',name:'篝火',detail:'温和底噪与细小噼啪声',level:35},
 {id:'stream',icon:'≋',name:'溪流',detail:'清亮水流 · 柔和起伏的潺潺声',level:40}
 ];
-const defaults={master:55,timer:0,sounds:Object.fromEntries(definitions.map(d=>[d.id,{enabled:d.id==='pink',level:d.level}]))};
+const defaults={master:30,timer:0,sounds:Object.fromEntries(definitions.map(d=>[d.id,{enabled:d.id==='ocean'||d.id==='fire',level:({white:35,pink:17,brown:35,rain:8,ocean:45,wind:61,fire:28,stream:40})[d.id]}]))};
 const $=id=>document.getElementById(id);
 const clamp=(v,min,max)=>Math.min(max,Math.max(min,Number.isFinite(+v)?+v:min));
 let saved;try{saved=JSON.parse(localStorage.getItem('sleep-sounds-v1')||'null')}catch{saved=null}
-const settings={master:clamp(saved?.master??defaults.master,0,100),timer:[0,15,30,45,60,90,120,180].includes(+saved?.timer)?+saved.timer:0,sounds:Object.fromEntries(definitions.map(d=>[d.id,{enabled:saved?.sounds?.[d.id]?.enabled===undefined?defaults.sounds[d.id].enabled:saved.sounds[d.id].enabled===true,level:clamp(saved?.sounds?.[d.id]?.level??d.level,0,100)}]))};
+const settings={master:clamp(saved?.master??defaults.master,0,100),timer:[0,15,30,45,60,90,120,180].includes(+saved?.timer)?+saved.timer:0,sounds:Object.fromEntries(definitions.map(d=>[d.id,{enabled:saved?.sounds?.[d.id]?.enabled===undefined?defaults.sounds[d.id].enabled:saved.sounds[d.id].enabled===true,level:clamp(saved?.sounds?.[d.id]?.level??defaults.sounds[d.id].level,0,100)}]))};
 let enginePrefs;try{enginePrefs=JSON.parse(localStorage.getItem('sleep-sounds:engine:v1')||'null')}catch{enginePrefs=null}
 const prefs={mode:enginePrefs?.mode==='realtime'?'realtime':'loop',seconds:[12,30,60].includes(+enginePrefs?.seconds)?+enginePrefs.seconds:30};
 const savePrefs=()=>{try{localStorage.setItem('sleep-sounds:engine:v1',JSON.stringify(prefs))}catch{}};
