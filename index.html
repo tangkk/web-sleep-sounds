@@ -24,7 +24,7 @@
 <h2>设备同步</h2><section class="panel sync-panel" aria-label="设备同步"><p>不同设备输入相同同步码，即可同步每种声音的开关、音量、总音量与定时设置。播放状态、倒计时和生成模式保存在本机，不会远程自动播放。</p><label class="field" for="sync-code">同步码<input id="sync-code" class="sync-code" type="text" autocomplete="off" spellcheck="false" placeholder="输入你自己设置的同步码"></label><div class="sync-actions"><button id="sync-save" class="secondary" type="button">保存并同步</button><button id="sync-now" class="secondary" type="button">立即同步</button><button id="sync-off" class="secondary" type="button">关闭此设备同步</button></div><p id="sync-indicator" class="hint">未连接</p><div id="sync-status" class="sync-status" role="status" aria-live="polite"></div><p>同步码相当于访问凭据，请不要公开分享。未连接时设置仍只保存在本机；同步需要联网。</p></section>
 <footer>声音由浏览器 Web Audio API 生成；首次播放需要点击按钮。建议从低音量开始。实时模式要求浏览器支持 AudioWorklet；部分手机锁屏或省电时可能暂停网页音频。本应用不是医疗或助眠疗效保证。</footer>
 </main>
-<script src="./audio-engine.js?v=1"></script>
+<script src="./ios-background.js?v=1"></script>\n<script src="./audio-engine.js?v=1"></script>
 <script>
 (() => {
 'use strict';
@@ -91,11 +91,11 @@ async function destroyAudio(){
 function clearTimer(){if(timerId!==null)clearTimeout(timerId);if(timerInterval!==null)clearInterval(timerInterval);timerId=null;timerInterval=null;timerEnd=0;fading=false}
 function renderTimer(){if(!playing||!timerEnd){$('timer-status').textContent=settings.timer?'点击播放后开始计时':'';return}const left=Math.max(0,Math.ceil((timerEnd-Date.now())/1000)),m=Math.floor(left/60),s=left%60;$('timer-status').textContent=`自动关闭倒计时 ${m}:${String(s).padStart(2,'0')}${fading?' · 正在渐弱':''}`}
 function scheduleTimer(){clearTimer();if(!playing||!settings.timer){renderTimer();return}const total=settings.timer*60000;timerEnd=Date.now()+total;timerInterval=setInterval(()=>{if(!playing||!context)return;const remaining=timerEnd-Date.now();if(remaining<=30000&&!fading){fading=true;masterGain.gain.cancelScheduledValues(context.currentTime);masterGain.gain.setValueAtTime(masterGain.gain.value,context.currentTime);masterGain.gain.linearRampToValueAtTime(0,context.currentTime+Math.max(0,remaining)/1000);updateUI()}if(remaining<=0){stopPlayback();return}renderTimer()},250);timerId=setTimeout(stopPlayback,total);renderTimer()}
-async function stopPlayback(){clearTimer();playing=false;if(context){masterGain.gain.cancelScheduledValues(context.currentTime);masterGain.gain.setTargetAtTime(0,context.currentTime,.035);setTimeout(()=>{if(context&&!playing)context.suspend().catch(()=>{})},200)}updateUI();renderTimer()}
+async function stopPlayback(){clearTimer();playing=false;window.iOSBackgroundAudio?.pause();if(context){masterGain.gain.cancelScheduledValues(context.currentTime);masterGain.gain.setTargetAtTime(0,context.currentTime,.035);setTimeout(()=>{if(context&&!playing)context.suspend().catch(()=>{})},200)}updateUI();renderTimer()}
 $('play').addEventListener('click',async()=>{
  if(busy)return;busy=true;$('play').disabled=true;
- try{if(playing)await stopPlayback();else{if(!context)await initializeAudio();else await context.resume();playing=true;fading=false;updateAudio();updateUI();scheduleTimer();}}
- catch(error){playing=false;clearTimer();$('status').textContent=`无法播放：${error.message||'请重试'}`;console.error(error);await destroyAudio();}
+ try{if(playing)await stopPlayback();else{void window.iOSBackgroundAudio?.start();if(!context)await initializeAudio();else await context.resume();playing=true;fading=false;updateAudio();updateUI();scheduleTimer();}}
+ catch(error){playing=false;clearTimer();window.iOSBackgroundAudio?.pause();$('status').textContent=`无法播放：${error.message||'请重试'}`;console.error(error);await destroyAudio();}
  finally{busy=false;$('play').disabled=false;}
 });
 async function switchEngine(){
@@ -107,6 +107,9 @@ async function switchEngine(){
  }catch(error){console.error(error);await destroyAudio();playing=false;clearTimer();prefs.mode='loop';savePrefs();updateUI();$('status').textContent=`模式切换失败：${error.message}；已改用循环模式，请重新播放。`;}
  finally{busy=false;$('play').disabled=false;$('engine-mode').disabled=false;$('loop-seconds').disabled=prefs.mode==='realtime';}
 }
+window.addEventListener('sleep-sounds:media-play',()=>{if(!playing&&!busy)$('play').click()});
+window.addEventListener('sleep-sounds:media-pause',()=>{if(playing&&!busy)$('play').click()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&playing&&context?.state==='suspended')context.resume().catch(()=>{});});
 $('engine-mode').addEventListener('change',()=>{prefs.mode=$('engine-mode').value;switchEngine()});
 $('loop-seconds').addEventListener('change',()=>{prefs.seconds=+$('loop-seconds').value;switchEngine()});
 window.SleepSounds={ids:definitions.map(d=>d.id),readControl(name){if(name==='master'||name==='timer')return settings[name];const[id,field]=name.split(':');return settings.sounds[id]?.[field]},applyControls(changes){let timerChanged=false;for(const[name,value]of Object.entries(changes)){if(name==='master')settings.master=clamp(value,0,100);else if(name==='timer'){settings.timer=value;timerChanged=true}else{const[id,field]=name.split(':');if(settings.sounds[id]&&(field==='level'||field==='enabled'))settings.sounds[id][field]=field==='enabled'?value===true:clamp(value,0,100)}}updateUI();updateAudio();if(timerChanged){if(playing)scheduleTimer();else renderTimer()}persist([])}};
