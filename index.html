@@ -1,30 +1,30 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#ffffff">
-<meta name="description" content="实时合成白噪声和自然声，支持混音、睡眠定时与设备同步。">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="可选择长循环或实时生成的白噪声与自然声，支持独立混音、睡眠定时和设备同步。">
+<link rel="icon" href="./favicon.ico" sizes="any"><link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <title>Sleep Sounds · 睡眠声景</title>
 <style>
 :root{color-scheme:light;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fff;color:#111;font-synthesis:none}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:#fff;color:#111}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #111;outline-offset:3px}
 .wrap{max-width:890px;padding:36px 20px 80px;margin:auto}header{display:flex;align-items:center;gap:15px;margin-bottom:31px}.moon{font-size:35px;width:60px;height:60px;border-radius:19px;background:#f3f3f3;display:grid;place-items:center}h1{font-size:clamp(26px,5vw,35px);letter-spacing:-.7px;margin:0 0 5px}.sub,.hint{color:#555;font-size:14px}.sub{margin:0}
-.panel{border:1px solid #ddd;background:#fff;border-radius:22px;box-shadow:0 5px 24px #00000008}.player{padding:27px;margin-bottom:22px}.player-top{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.eyebrow{color:#555;font-size:13px;margin:0 0 8px}#status{font-size:19px;font-weight:650;margin:0}#play{min-width:130px;padding:15px 21px;border:0;background:#111;color:#fff;font-weight:750;border-radius:15px}#play:hover{background:#333}#play:disabled{opacity:.6;cursor:wait}.master{display:grid;grid-template-columns:90px 1fr 45px;align-items:center;gap:13px;margin-top:29px}input[type=range]{width:100%;accent-color:#111;cursor:pointer}output{color:#333;font-size:13px;font-variant-numeric:tabular-nums;text-align:right}h2{font-size:20px;margin:31px 0 14px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.sound{padding:19px;transition:background .2s,border-color .2s}.sound.active{border-color:#111;background:#f6f6f6}.sound-head{display:flex;justify-content:space-between;gap:10px;align-items:start}.sound-title{display:flex;align-items:center;gap:11px}.emoji{font-size:25px;width:43px;height:43px;border-radius:13px;display:grid;place-items:center;background:#f1f1f1}.name{font-weight:700;font-size:16px;margin-bottom:4px}.detail{color:#555;font-size:12px;line-height:1.5}.toggle{flex:none;border:1px solid #aaa;background:#fff;color:#111;border-radius:100px;min-width:56px;padding:7px 10px;font-size:12px}.active .toggle{background:#111;color:#fff;border-color:#111;font-weight:700}.level{display:grid;grid-template-columns:1fr 38px;align-items:center;gap:9px;margin-top:21px}.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:end;padding:21px}.field{display:flex;flex-direction:column;gap:9px;color:#333;font-size:13px;flex:1;min-width:170px}select,.sync-code{width:100%;border:1px solid #aaa;background:#fff;color:#111;padding:12px;border-radius:11px}.secondary{border:1px solid #aaa;border-radius:11px;padding:12px 16px;background:#fff;color:#111}.secondary:hover{background:#f3f3f3}.timer-status{color:#333;min-height:19px;margin:12px 0 0;font-size:13px;font-variant-numeric:tabular-nums}.sync-panel{padding:21px}.sync-panel h2{margin:0 0 8px}.sync-panel p{color:#555;font-size:13px;line-height:1.6}.sync-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.sync-status{min-height:20px;color:#555;font-size:13px;margin-top:12px}footer{color:#555;font-size:12px;line-height:1.8;margin-top:27px}
+.panel{border:1px solid #ddd;background:#fff;border-radius:22px;box-shadow:0 5px 24px #00000008}.player{padding:27px;margin-bottom:22px}.player-top{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.eyebrow{color:#555;font-size:13px;margin:0 0 8px}#status{font-size:19px;font-weight:650;margin:0}#play{min-width:130px;padding:15px 21px;border:0;background:#111;color:#fff;font-weight:750;border-radius:15px}#play:hover{background:#333}#play:disabled{opacity:.6;cursor:wait}.master{display:grid;grid-template-columns:90px 1fr 45px;align-items:center;gap:13px;margin-top:29px}input[type=range]{width:100%;accent-color:#111;cursor:pointer}output{color:#333;font-size:13px;font-variant-numeric:tabular-nums;text-align:right}h2{font-size:20px;margin:31px 0 14px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.sound{padding:19px;transition:background .2s,border-color .2s}.sound.active{border-color:#111;background:#f6f6f6}.sound-head{display:flex;justify-content:space-between;gap:10px;align-items:start}.sound-title{display:flex;align-items:center;gap:11px}.emoji{font-size:25px;width:43px;height:43px;border-radius:13px;display:grid;place-items:center;background:#f1f1f1}.name{font-weight:700;font-size:16px;margin-bottom:4px}.detail{color:#555;font-size:12px;line-height:1.5}.toggle{flex:none;border:1px solid #aaa;background:#fff;color:#111;border-radius:100px;min-width:56px;padding:7px 10px;font-size:12px}.active .toggle{background:#111;color:#fff;border-color:#111;font-weight:700}.level{display:grid;grid-template-columns:1fr 38px;align-items:center;gap:9px;margin-top:21px}.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:end;padding:21px}.field{display:flex;flex-direction:column;gap:9px;color:#333;font-size:13px;flex:1;min-width:170px}select,.sync-code{width:100%;border:1px solid #aaa;background:#fff;color:#111;padding:12px;border-radius:11px}.secondary{border:1px solid #aaa;border-radius:11px;padding:12px 16px;background:#fff;color:#111}.secondary:hover{background:#f3f3f3}.timer-status{color:#333;min-height:19px;margin:12px 0 0;font-size:13px;font-variant-numeric:tabular-nums}.mode-note{flex-basis:100%;font-size:12px;color:#555;line-height:1.6;margin:0}.sync-panel{padding:21px}.sync-panel h2{margin:0 0 8px}.sync-panel p{color:#555;font-size:13px;line-height:1.6}.sync-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.sync-status{min-height:20px;color:#555;font-size:13px;margin-top:12px}footer{color:#555;font-size:12px;line-height:1.8;margin-top:27px}
 @media(max-width:580px){.wrap{padding:27px 15px 65px}.grid{grid-template-columns:1fr}.player{padding:21px}.master{grid-template-columns:64px 1fr 38px;gap:9px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
 </style>
 </head>
 <body>
 <main class="wrap">
-<header><div class="moon" aria-hidden="true">☾</div><div><h1>Sleep Sounds</h1><p class="sub">属于你的睡眠声景 · 实时合成，不依赖音频文件</p></div></header>
+<header><div class="moon" aria-hidden="true">☾</div><div><h1>Sleep Sounds</h1><p class="sub">属于你的睡眠声景 · 循环与实时两种生成方式</p></div></header>
 <section class="panel player" aria-label="播放器"><div class="player-top"><div><p class="eyebrow">NOW PLAYING</p><p id="status" role="status">准备好，今晚睡个好觉</p></div><button id="play" type="button" aria-pressed="false">▶ 开始播放</button></div><div class="master"><label for="master">总音量</label><input id="master" type="range" min="0" max="100" value="55"><output id="master-value" for="master">55%</output></div><p class="timer-status" id="timer-status" aria-live="polite"></p></section>
 <h2>选择声音 · 自由混合</h2><div class="grid" id="sounds"></div>
+<h2>声音生成</h2><section class="panel tools" aria-label="声音生成设置"><label class="field" for="engine-mode">生成模式<select id="engine-mode"><option value="loop">循环音频（原始音色）</option><option value="realtime">实时生成（AudioWorklet）</option></select></label><label class="field" for="loop-seconds">循环长度<select id="loop-seconds"><option value="12">12 秒 · 原版</option><option value="30">30 秒 · 默认</option><option value="60">60 秒 · 更长</option></select></label><p id="mode-note" class="mode-note">循环模式：预生成随机音频并重复播放。较长循环需要更多内存；仅为已开启的声音生成音频。</p></section>
 <h2>睡眠设置</h2><section class="panel tools" aria-label="睡眠设置"><label class="field" for="timer">自动关闭（结束前渐弱 30 秒）<select id="timer"><option value="0">不设置</option><option value="15">15 分钟</option><option value="30">30 分钟</option><option value="45">45 分钟</option><option value="60">1 小时</option><option value="90">1.5 小时</option><option value="120">2 小时</option><option value="180">3 小时</option></select></label><button class="secondary" id="reset" type="button">恢复默认混音</button></section>
-<h2>设备同步</h2><section class="panel sync-panel" aria-label="设备同步"><p>在不同设备输入相同同步码，同步每种声音的开关、音量、总音量与定时设置。各设备音频播放和倒计时独立，不会远程自动播放。</p><label class="field" for="sync-code">同步码<input id="sync-code" class="sync-code" type="text" autocomplete="off" spellcheck="false" placeholder="输入你自己设置的同步码"></label><div class="sync-actions"><button id="sync-save" class="secondary" type="button">保存并同步</button><button id="sync-now" class="secondary" type="button">立即同步</button><button id="sync-off" class="secondary" type="button">关闭此设备同步</button></div><p id="sync-indicator" class="hint">未连接</p><div id="sync-status" class="sync-status" role="status" aria-live="polite"></div><p>同步码相当于访问凭据，请不要公开分享。未连接时设置仍只保存在本机；同步需要联网。</p></section>
-<footer>声音在你的设备中由 Web Audio API 生成；无需注册、无需上传音频。首次播放需要点击按钮。建议从低音量开始，播放时保持浏览器标签页开启。部分手机在锁屏或系统省电时可能暂停网页音频。此应用不是医疗或助眠疗效保证。</footer>
+<h2>设备同步</h2><section class="panel sync-panel" aria-label="设备同步"><p>不同设备输入相同同步码，即可同步每种声音的开关、音量、总音量与定时设置。播放状态、倒计时和生成模式保存在本机，不会远程自动播放。</p><label class="field" for="sync-code">同步码<input id="sync-code" class="sync-code" type="text" autocomplete="off" spellcheck="false" placeholder="输入你自己设置的同步码"></label><div class="sync-actions"><button id="sync-save" class="secondary" type="button">保存并同步</button><button id="sync-now" class="secondary" type="button">立即同步</button><button id="sync-off" class="secondary" type="button">关闭此设备同步</button></div><p id="sync-indicator" class="hint">未连接</p><div id="sync-status" class="sync-status" role="status" aria-live="polite"></div><p>同步码相当于访问凭据，请不要公开分享。未连接时设置仍只保存在本机；同步需要联网。</p></section>
+<footer>声音由浏览器 Web Audio API 生成；首次播放需要点击按钮。建议从低音量开始。实时模式要求浏览器支持 AudioWorklet；部分手机锁屏或省电时可能暂停网页音频。本应用不是医疗或助眠疗效保证。</footer>
 </main>
+<script src="./audio-engine.js?v=1"></script>
 <script>
 (() => {
 'use strict';
@@ -43,35 +43,72 @@ const $=id=>document.getElementById(id);
 const clamp=(v,min,max)=>Math.min(max,Math.max(min,Number.isFinite(+v)?+v:min));
 let saved;try{saved=JSON.parse(localStorage.getItem('sleep-sounds-v1')||'null')}catch{saved=null}
 const settings={master:clamp(saved?.master??defaults.master,0,100),timer:[0,15,30,45,60,90,120,180].includes(+saved?.timer)?+saved.timer:0,sounds:Object.fromEntries(definitions.map(d=>[d.id,{enabled:saved?.sounds?.[d.id]?.enabled===undefined?defaults.sounds[d.id].enabled:saved.sounds[d.id].enabled===true,level:clamp(saved?.sounds?.[d.id]?.level??d.level,0,100)}]))};
+let enginePrefs;try{enginePrefs=JSON.parse(localStorage.getItem('sleep-sounds:engine:v1')||'null')}catch{enginePrefs=null}
+const prefs={mode:enginePrefs?.mode==='realtime'?'realtime':'loop',seconds:[12,30,60].includes(+enginePrefs?.seconds)?+enginePrefs.seconds:30};
+const savePrefs=()=>{try{localStorage.setItem('sleep-sounds:engine:v1',JSON.stringify(prefs))}catch{}};
 const persist=names=>{try{localStorage.setItem('sleep-sounds-v1',JSON.stringify(settings))}catch{}if(names?.length)window.dispatchEvent(new CustomEvent('sleep-sounds:changed',{detail:{names}}))};
-let context,masterGain,compressor,channels={},playing=false,timerId=null,timerEnd=0,timerInterval=null,fading=false,busy=false;
+let context,masterGain,engine,playing=false,timerId=null,timerEnd=0,timerInterval=null,fading=false,busy=false;
 for(const d of definitions){const card=document.createElement('section');card.className='panel sound';card.id=`card-${d.id}`;card.innerHTML=`<div class="sound-head"><div class="sound-title"><span class="emoji" aria-hidden="true">${d.icon}</span><div><div class="name">${d.name}</div><div class="detail">${d.detail}</div></div></div><button type="button" class="toggle" id="toggle-${d.id}" aria-label="${d.name}开关" aria-pressed="false"></button></div><div class="level"><input type="range" id="level-${d.id}" min="0" max="100" aria-label="${d.name}音量"><output id="value-${d.id}" for="level-${d.id}"></output></div>`;$('sounds').append(card);
 $(`toggle-${d.id}`).addEventListener('click',()=>{settings.sounds[d.id].enabled=!settings.sounds[d.id].enabled;updateUI();updateAudio();persist([`${d.id}:enabled`])});
 $(`level-${d.id}`).addEventListener('input',event=>{settings.sounds[d.id].level=+event.target.value;updateUI();updateAudio();persist([`${d.id}:level`])})}
 $('master').addEventListener('input',event=>{settings.master=+event.target.value;updateUI();updateAudio();persist(['master'])});
 $('timer').addEventListener('change',event=>{settings.timer=+event.target.value;if(playing)scheduleTimer();else renderTimer();persist(['timer'])});
 $('reset').addEventListener('click',()=>{settings.master=defaults.master;for(const d of definitions)settings.sounds[d.id]={...defaults.sounds[d.id]};updateUI();updateAudio();persist(['master',...definitions.flatMap(d=>[`${d.id}:enabled`,`${d.id}:level`])])});
-function makeNoise(type,seconds=12){const rate=context.sampleRate,length=Math.ceil(rate*seconds),buffer=context.createBuffer(1,length,rate),a=buffer.getChannelData(0);let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0,last=0;for(let i=0;i<length;i++){const w=Math.random()*2-1;if(type==='pink'){b0=.99886*b0+w*.0555179;b1=.99332*b1+w*.0750759;b2=.969*b2+w*.153852;b3=.8665*b3+w*.3104856;b4=.55*b4+w*.5329522;b5=-.7616*b5-w*.016898;a[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11;b6=w*.115926}else if(type==='brown'){last=(last+.02*w)/1.02;a[i]=last*3.4}else a[i]=w*.62}let sum=0,peak=0;for(let i=0;i<length;i++)sum+=a[i];const mean=sum/length;for(let i=0;i<length;i++){a[i]-=mean;peak=Math.max(peak,Math.abs(a[i]))}const scale=.72/Math.max(peak,.72);for(let i=0;i<length;i++)a[i]*=scale;return buffer}
-function source(buffer){const s=context.createBufferSource();s.buffer=buffer;s.loop=true;s.start();return s}
-function filter(type,frequency,q=.7){const f=context.createBiquadFilter();f.type=type;f.frequency.value=frequency;f.Q.value=q;return f}
-function lfo(gainNode,rate,depth,offset){const osc=context.createOscillator(),amount=context.createGain();osc.type='sine';osc.frequency.value=rate;amount.gain.value=depth;gainNode.gain.value=offset;osc.connect(amount).connect(gainNode.gain);osc.start();return[osc,amount]}
-function createChannel(id,buffers){const volume=context.createGain();volume.gain.value=0;volume.connect(masterGain);const nodes=[volume],track=n=>{nodes.push(n);return n};const connect=(buffer,components=[])=>{let current=track(source(buffer));for(const n of components){current.connect(n);current=n;track(n)}current.connect(volume)};
-if(id==='white'||id==='pink'||id==='brown')connect(buffers[id]);
-if(id==='rain'){connect(buffers.white,[filter('highpass',800),filter('lowpass',8200)]);const drops=context.createBuffer(1,context.sampleRate*12,context.sampleRate),a=drops.getChannelData(0);for(let t=0;t<12;t+=.018+Math.random()*.085){const start=Math.floor(t*context.sampleRate),duration=Math.floor((.008+Math.random()*.022)*context.sampleRate),amp=.12+Math.random()*.45;for(let j=0;j<duration&&start+j<a.length;j++)a[start+j]+=(Math.random()*2-1)*amp*Math.exp(-j/(duration*.18))}connect(drops,[filter('bandpass',2100,.5)])}
-if(id==='ocean'){const sweep=track(context.createGain());connect(buffers.pink,[filter('lowpass',800),sweep]);nodes.push(...lfo(sweep,.085,.43,.48))}
-if(id==='wind'){const gust=track(context.createGain());connect(buffers.pink,[filter('lowpass',440),gust]);nodes.push(...lfo(gust,.13,.26,.48))}
-if(id==='fire'){connect(buffers.brown,[filter('highpass',110),filter('lowpass',630)]);const crackle=context.createBuffer(1,context.sampleRate*12,context.sampleRate),a=crackle.getChannelData(0);for(let i=0;i<170;i++){const start=Math.floor(Math.random()*a.length),len=Math.floor((.002+Math.random()*.016)*context.sampleRate),amp=.2+Math.random()*.7;for(let j=0;j<len&&start+j<a.length;j++)a[start+j]+=(Math.random()*2-1)*amp*Math.exp(-j/(len*.2))}connect(crackle,[filter('highpass',750)])}
-if(id==='stream'){const ripple=track(context.createGain());connect(buffers.white,[filter('highpass',320),filter('lowpass',3200),ripple]);nodes.push(...lfo(ripple,.23,.14,.54));connect(buffers.pink,[filter('bandpass',1100,.42)])}
-return{volume,nodes}}
-function initializeAudio(){const AudioContextClass=window.AudioContext||window.webkitAudioContext;if(!AudioContextClass)throw Error('浏览器不支持 Web Audio API');context=new AudioContextClass();masterGain=context.createGain();masterGain.gain.value=0;compressor=context.createDynamicsCompressor();compressor.threshold.value=-18;compressor.knee.value=20;compressor.ratio.value=5;compressor.attack.value=.004;compressor.release.value=.3;masterGain.connect(compressor).connect(context.destination);const buffers={white:makeNoise('white'),pink:makeNoise('pink'),brown:makeNoise('brown')};for(const d of definitions)channels[d.id]=createChannel(d.id,buffers)}
-function updateAudio(){if(!context)return;const now=context.currentTime;for(const d of definitions){const s=settings.sounds[d.id];channels[d.id].volume.gain.setTargetAtTime(s.enabled?s.level/100*.52:0,now,.07)}if(!fading)masterGain.gain.setTargetAtTime(settings.master/100*.8,now,.07)}
-function updateUI(){$('master').value=settings.master;$('master-value').textContent=`${settings.master}%`;for(const d of definitions){const s=settings.sounds[d.id],t=$(`toggle-${d.id}`);$(`card-${d.id}`).classList.toggle('active',s.enabled);t.textContent=s.enabled?'已开启':'已关闭';t.setAttribute('aria-pressed',String(s.enabled));$(`level-${d.id}`).value=s.level;$(`value-${d.id}`).textContent=`${s.level}%`}$('timer').value=String(settings.timer);$('play').textContent=playing?'Ⅱ 暂停播放':'▶ 开始播放';$('play').setAttribute('aria-pressed',String(playing));$('status').textContent=playing?(fading?'声音正在渐弱…':'声景播放中'):'准备好，今晚睡个好觉'}
+function updateUI(){
+ $('master').value=settings.master;$('master-value').textContent=`${settings.master}%`;
+ for(const d of definitions){const s=settings.sounds[d.id],t=$(`toggle-${d.id}`);$(`card-${d.id}`).classList.toggle('active',s.enabled);t.textContent=s.enabled?'已开启':'已关闭';t.setAttribute('aria-pressed',String(s.enabled));$(`level-${d.id}`).value=s.level;$(`value-${d.id}`).textContent=`${s.level}%`;}
+ $('timer').value=String(settings.timer);$('engine-mode').value=prefs.mode;$('loop-seconds').value=String(prefs.seconds);$('loop-seconds').disabled=prefs.mode==='realtime';
+ $('mode-note').textContent=prefs.mode==='loop'?'循环模式：预生成随机音频并重复播放；仅为已开启的声音生成音频。30 秒为默认，60 秒占用更多内存。':'实时模式：音频渲染线程持续生成新采样，保持原有滤波和调制音色，不使用固定音频循环。';
+ $('play').textContent=playing?'Ⅱ 暂停播放':'▶ 开始播放';$('play').setAttribute('aria-pressed',String(playing));$('status').textContent=playing?(fading?'声音正在渐弱…':'声景播放中'):'准备好，今晚睡个好觉';
+}
+function updateAudio(){
+ if(!context||!engine)return;
+ const now=context.currentTime;
+ for(const d of definitions){const sound=settings.sounds[d.id];if(sound.enabled){const volume=engine.ensure(d.id);volume.gain.setTargetAtTime(sound.level/100*.52,now,.07);}else if(engine.has(d.id)){engine.ensure(d.id).gain.setTargetAtTime(0,now,.07);}}
+ if(!fading)masterGain.gain.setTargetAtTime(settings.master/100*.8,now,.07);
+}
+async function initializeAudio(){
+ const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+ if(!AudioContextClass)throw Error('浏览器不支持 Web Audio API');
+ if(typeof window.createSleepEngine!=='function')throw Error('声音引擎未加载，请刷新页面');
+ context=new AudioContextClass();
+ await context.resume();
+ if(prefs.mode==='realtime'){
+  if(!context.audioWorklet||typeof AudioWorkletNode==='undefined')throw Error('此浏览器不支持 AudioWorklet，请改用循环模式');
+  await context.audioWorklet.addModule('./noise-worklet.js?v=1');
+ }
+ masterGain=context.createGain();masterGain.gain.value=0;
+ const compressor=context.createDynamicsCompressor();compressor.threshold.value=-18;compressor.knee.value=20;compressor.ratio.value=5;compressor.attack.value=.004;compressor.release.value=.3;
+ masterGain.connect(compressor).connect(context.destination);
+ engine=window.createSleepEngine(context,{mode:prefs.mode,seconds:prefs.seconds,output:masterGain});
+ updateAudio();
+}
+async function destroyAudio(){
+ if(engine){engine.dispose();engine=null;}
+ const old=context;context=null;masterGain=null;
+ if(old){try{await old.close()}catch{}}
+}
 function clearTimer(){if(timerId!==null)clearTimeout(timerId);if(timerInterval!==null)clearInterval(timerInterval);timerId=null;timerInterval=null;timerEnd=0;fading=false}
 function renderTimer(){if(!playing||!timerEnd){$('timer-status').textContent=settings.timer?'点击播放后开始计时':'';return}const left=Math.max(0,Math.ceil((timerEnd-Date.now())/1000)),m=Math.floor(left/60),s=left%60;$('timer-status').textContent=`自动关闭倒计时 ${m}:${String(s).padStart(2,'0')}${fading?' · 正在渐弱':''}`}
 function scheduleTimer(){clearTimer();if(!playing||!settings.timer){renderTimer();return}const total=settings.timer*60000;timerEnd=Date.now()+total;timerInterval=setInterval(()=>{if(!playing||!context)return;const remaining=timerEnd-Date.now();if(remaining<=30000&&!fading){fading=true;masterGain.gain.cancelScheduledValues(context.currentTime);masterGain.gain.setValueAtTime(masterGain.gain.value,context.currentTime);masterGain.gain.linearRampToValueAtTime(0,context.currentTime+Math.max(0,remaining)/1000);updateUI()}if(remaining<=0){stopPlayback();return}renderTimer()},250);timerId=setTimeout(stopPlayback,total);renderTimer()}
 async function stopPlayback(){clearTimer();playing=false;if(context){masterGain.gain.cancelScheduledValues(context.currentTime);masterGain.gain.setTargetAtTime(0,context.currentTime,.035);setTimeout(()=>{if(context&&!playing)context.suspend().catch(()=>{})},200)}updateUI();renderTimer()}
-$('play').addEventListener('click',async()=>{if(busy)return;busy=true;$('play').disabled=true;try{if(playing)await stopPlayback();else{if(!context)initializeAudio();await context.resume();playing=true;fading=false;updateAudio();updateUI();scheduleTimer()}}catch(error){playing=false;clearTimer();$('status').textContent=`无法播放：${error.message||'请重试'}`;console.error(error)}finally{busy=false;$('play').disabled=false}});
-// Export a narrowly scoped interface for sync.js. Applying remote settings does not mark them as local edits.
+$('play').addEventListener('click',async()=>{
+ if(busy)return;busy=true;$('play').disabled=true;
+ try{if(playing)await stopPlayback();else{if(!context)await initializeAudio();else await context.resume();playing=true;fading=false;updateAudio();updateUI();scheduleTimer();}}
+ catch(error){playing=false;clearTimer();$('status').textContent=`无法播放：${error.message||'请重试'}`;console.error(error);await destroyAudio();}
+ finally{busy=false;$('play').disabled=false;}
+});
+async function switchEngine(){
+ if(busy)return;busy=true;$('play').disabled=true;$('engine-mode').disabled=true;$('loop-seconds').disabled=true;
+ const wasPlaying=playing;
+ try{
+  if(context){await destroyAudio();if(wasPlaying){await initializeAudio();playing=true;updateAudio();if(fading&&timerEnd){const left=Math.max(0,(timerEnd-Date.now())/1000);masterGain.gain.setValueAtTime(settings.master/100*.8,context.currentTime);masterGain.gain.linearRampToValueAtTime(0,context.currentTime+left);}}}
+  savePrefs();updateUI();renderTimer();
+ }catch(error){console.error(error);await destroyAudio();playing=false;clearTimer();prefs.mode='loop';savePrefs();updateUI();$('status').textContent=`模式切换失败：${error.message}；已改用循环模式，请重新播放。`;}
+ finally{busy=false;$('play').disabled=false;$('engine-mode').disabled=false;$('loop-seconds').disabled=prefs.mode==='realtime';}
+}
+$('engine-mode').addEventListener('change',()=>{prefs.mode=$('engine-mode').value;switchEngine()});
+$('loop-seconds').addEventListener('change',()=>{prefs.seconds=+$('loop-seconds').value;switchEngine()});
 window.SleepSounds={ids:definitions.map(d=>d.id),readControl(name){if(name==='master'||name==='timer')return settings[name];const[id,field]=name.split(':');return settings.sounds[id]?.[field]},applyControls(changes){let timerChanged=false;for(const[name,value]of Object.entries(changes)){if(name==='master')settings.master=clamp(value,0,100);else if(name==='timer'){settings.timer=value;timerChanged=true}else{const[id,field]=name.split(':');if(settings.sounds[id]&&(field==='level'||field==='enabled'))settings.sounds[id][field]=field==='enabled'?value===true:clamp(value,0,100)}}updateUI();updateAudio();if(timerChanged){if(playing)scheduleTimer();else renderTimer()}persist([])}};
 updateUI();renderTimer();
 })();
