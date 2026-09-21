@@ -3,119 +3,29 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="description" content="可选择长循环或实时生成的白噪声与自然声，支持独立混音、睡眠定时和设备同步。">
+<meta name="description" content="实时生成白噪声与自然声，独立混音、音色调节、睡眠定时和跨设备同步。">
 <link rel="icon" href="./favicon.ico" sizes="any"><link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <title>Sleep Sounds · 睡眠声景</title>
 <style>
 :root{color-scheme:light;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fff;color:#111;font-synthesis:none}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:#fff;color:#111}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #111;outline-offset:3px}
 .wrap{max-width:890px;padding:36px 20px 80px;margin:auto}header{display:flex;align-items:center;gap:15px;margin-bottom:31px}.moon{font-size:35px;width:60px;height:60px;border-radius:19px;background:#f3f3f3;display:grid;place-items:center}h1{font-size:clamp(26px,5vw,35px);letter-spacing:-.7px;margin:0 0 5px}.sub,.hint{color:#555;font-size:14px}.sub{margin:0}
-.panel{border:1px solid #ddd;background:#fff;border-radius:22px;box-shadow:0 5px 24px #00000008}.player{padding:27px;margin-bottom:22px}.player-top{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.eyebrow{color:#555;font-size:13px;margin:0 0 8px}#status{font-size:19px;font-weight:650;margin:0}#play{min-width:130px;padding:15px 21px;border:0;background:#111;color:#fff;font-weight:750;border-radius:15px}#play:hover{background:#333}#play:disabled{opacity:.6;cursor:wait}.master{display:grid;grid-template-columns:90px 1fr 45px;align-items:center;gap:13px;margin-top:29px}input[type=range]{width:100%;accent-color:#111;cursor:pointer}output{color:#333;font-size:13px;font-variant-numeric:tabular-nums;text-align:right}h2{font-size:20px;margin:31px 0 14px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.sound{padding:19px;transition:background .2s,border-color .2s}.sound.active{border-color:#111;background:#f6f6f6}.sound-head{display:flex;justify-content:space-between;gap:10px;align-items:start}.sound-title{display:flex;align-items:center;gap:11px}.emoji{font-size:25px;width:43px;height:43px;border-radius:13px;display:grid;place-items:center;background:#f1f1f1;color:#111;font-family:Arial,Helvetica,sans-serif;font-weight:500;line-height:1}.name{font-weight:700;font-size:16px;margin-bottom:4px}.detail{color:#555;font-size:12px;line-height:1.5}.toggle{flex:none;border:1px solid #aaa;background:#fff;color:#111;border-radius:100px;min-width:56px;padding:7px 10px;font-size:12px}.active .toggle{background:#111;color:#fff;border-color:#111;font-weight:700}.level{display:grid;grid-template-columns:1fr 38px;align-items:center;gap:9px;margin-top:21px}.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:end;padding:21px}.field{display:flex;flex-direction:column;gap:9px;color:#333;font-size:13px;flex:1;min-width:170px}select,.sync-code{width:100%;border:1px solid #aaa;background:#fff;color:#111;padding:12px;border-radius:11px}.secondary{border:1px solid #aaa;border-radius:11px;padding:12px 16px;background:#fff;color:#111}.secondary:hover{background:#f3f3f3}.timer-status{color:#333;min-height:19px;margin:12px 0 0;font-size:13px;font-variant-numeric:tabular-nums}.mode-note{flex-basis:100%;font-size:12px;color:#555;line-height:1.6;margin:0}.sync-panel{padding:21px}.sync-panel h2{margin:0 0 8px}.sync-panel p{color:#555;font-size:13px;line-height:1.6}.sync-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.sync-status{min-height:20px;color:#555;font-size:13px;margin-top:12px}footer{color:#555;font-size:12px;line-height:1.8;margin-top:27px}
-@media(max-width:580px){.wrap{padding:27px 15px 65px}.grid{grid-template-columns:1fr}.player{padding:21px}.master{grid-template-columns:64px 1fr 38px;gap:9px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+.panel{border:1px solid #ddd;background:#fff;border-radius:22px;box-shadow:0 5px 24px #00000008}.player{padding:27px;margin-bottom:22px}.player-top{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.eyebrow{color:#555;font-size:13px;margin:0 0 8px}#status{font-size:19px;font-weight:650;margin:0}#play{min-width:130px;padding:15px 21px;border:0;background:#111;color:#fff;font-weight:750;border-radius:15px}#play:hover{background:#333}#play:disabled{opacity:.6;cursor:wait}.master{display:grid;grid-template-columns:90px 1fr 45px;align-items:center;gap:13px;margin-top:29px}input[type=range]{width:100%;accent-color:#111;cursor:pointer}output{color:#333;font-size:13px;font-variant-numeric:tabular-nums;text-align:right}h2{font-size:20px;margin:31px 0 14px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.sound{padding:19px;transition:background .2s,border-color .2s}.sound.active{border-color:#111;background:#f6f6f6}.sound-head{display:flex;justify-content:space-between;gap:10px;align-items:start}.sound-title{display:flex;align-items:center;gap:11px}.symbol{font-size:25px;width:43px;height:43px;border-radius:13px;display:grid;place-items:center;background:#f1f1f1;color:#111;font-family:Arial,Helvetica,sans-serif;font-weight:500;line-height:1;flex:none}.name{font-weight:700;font-size:16px;margin-bottom:4px}.detail{color:#555;font-size:12px;line-height:1.5}.toggle{flex:none;border:1px solid #aaa;background:#fff;color:#111;border-radius:100px;min-width:56px;padding:7px 10px;font-size:12px}.active .toggle{background:#111;color:#fff;border-color:#111;font-weight:700}.control{display:grid;grid-template-columns:75px minmax(0,1fr) 38px;align-items:center;gap:9px;margin-top:17px}.control label{font-size:12px;color:#444;white-space:nowrap}.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:end;padding:21px}.field{display:flex;flex-direction:column;gap:9px;color:#333;font-size:13px;flex:1;min-width:170px}select,.sync-code{width:100%;border:1px solid #aaa;background:#fff;color:#111;padding:12px;border-radius:11px}.secondary{border:1px solid #aaa;border-radius:11px;padding:12px 16px;background:#fff;color:#111}.secondary:hover{background:#f3f3f3}.timer-status{color:#333;min-height:19px;margin:12px 0 0;font-size:13px;font-variant-numeric:tabular-nums}.sync-panel{padding:21px}.sync-panel h2{margin:0 0 8px}.sync-panel p{color:#555;font-size:13px;line-height:1.6}.sync-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.sync-status{min-height:20px;color:#555;font-size:13px;margin-top:12px}footer{color:#555;font-size:12px;line-height:1.8;margin-top:27px}
+@media(max-width:580px){.wrap{padding:27px 15px 65px}.grid{grid-template-columns:1fr}.player{padding:21px}.master{grid-template-columns:64px 1fr 38px;gap:9px}.control{grid-template-columns:70px minmax(0,1fr) 38px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
 </style>
 </head>
 <body>
 <main class="wrap">
-<header><div class="moon" aria-hidden="true">☾</div><div><h1>Sleep Sounds</h1><p class="sub">属于你的睡眠声景 · 循环与实时两种生成方式</p></div></header>
-<section class="panel player" aria-label="播放器"><div class="player-top"><div><p class="eyebrow">NOW PLAYING</p><p id="status" role="status">准备好，今晚睡个好觉</p></div><button id="play" type="button" aria-pressed="false">▶ 开始播放</button></div><div class="master"><label for="master">总音量</label><input id="master" type="range" min="0" max="100" value="55"><output id="master-value" for="master">55%</output></div><p class="timer-status" id="timer-status" aria-live="polite"></p></section>
+<header><div class="moon" aria-hidden="true">☾</div><div><h1>Sleep Sounds</h1><p class="sub">属于你的睡眠声景 · ∞ 实时生成</p></div></header>
+<section class="panel player" aria-label="播放器"><div class="player-top"><div><p class="eyebrow">NOW PLAYING</p><p id="status" role="status">准备好，今晚睡个好觉</p></div><button id="play" type="button" aria-pressed="false">▶ 开始播放</button></div><div class="master"><label for="master">总音量</label><input id="master" type="range" min="0" max="100" value="30"><output id="master-value" for="master">30%</output></div><p class="timer-status" id="timer-status" aria-live="polite"></p></section>
 <h2>选择声音 · 自由混合</h2><div class="grid" id="sounds"></div>
-<h2>声音生成</h2><section class="panel tools" aria-label="声音生成设置"><label class="field" for="engine-mode">生成模式<select id="engine-mode"><option value="loop">循环音频（原始音色）</option><option value="realtime">实时生成（AudioWorklet）</option></select></label><label class="field" id="loop-field" for="loop-seconds">循环长度<select id="loop-seconds"><option value="12">12 秒 · 原版</option><option value="30">30 秒 · 默认</option><option value="60">60 秒 · 更长</option></select></label><p id="mode-note" class="mode-note">循环模式：预生成随机音频并重复播放。较长循环需要更多内存；仅为已开启的声音生成音频。</p></section>
 <h2>睡眠设置</h2><section class="panel tools" aria-label="睡眠设置"><label class="field" for="timer">自动关闭（结束前渐弱 30 秒）<select id="timer"><option value="0">不设置</option><option value="15">15 分钟</option><option value="30">30 分钟</option><option value="45">45 分钟</option><option value="60">1 小时</option><option value="90">1.5 小时</option><option value="120">2 小时</option><option value="180">3 小时</option></select></label><button class="secondary" id="reset" type="button">恢复默认混音</button></section>
-<h2>设备同步</h2><section class="panel sync-panel" aria-label="设备同步"><p>不同设备输入相同同步码，即可同步每种声音的开关、音量、总音量与定时设置。播放状态、倒计时和生成模式保存在本机，不会远程自动播放。</p><label class="field" for="sync-code">同步码<input id="sync-code" class="sync-code" type="text" autocomplete="off" spellcheck="false" placeholder="输入你自己设置的同步码"></label><div class="sync-actions"><button id="sync-save" class="secondary" type="button">保存并同步</button><button id="sync-now" class="secondary" type="button">立即同步</button><button id="sync-off" class="secondary" type="button">关闭此设备同步</button></div><p id="sync-indicator" class="hint">未连接</p><div id="sync-status" class="sync-status" role="status" aria-live="polite"></div><p>同步码相当于访问凭据，请不要公开分享。未连接时设置仍只保存在本机；同步需要联网。</p></section>
-<footer>声音由浏览器 Web Audio API 生成；首次播放需要点击按钮。建议从低音量开始。实时模式要求浏览器支持 AudioWorklet；部分手机锁屏或省电时可能暂停网页音频。本应用不是医疗或助眠疗效保证。</footer>
+<h2>设备同步</h2><section class="panel sync-panel" aria-label="设备同步"><p>不同设备输入相同同步码，即可同步每种声音的开关、音量、音色参数、总音量与定时设置。播放状态和倒计时仅保存在本机，不会远程自动播放。</p><label class="field" for="sync-code">同步码<input id="sync-code" class="sync-code" type="text" autocomplete="off" spellcheck="false" placeholder="输入你自己设置的同步码"></label><div class="sync-actions"><button id="sync-save" class="secondary" type="button">保存并同步</button><button id="sync-now" class="secondary" type="button">立即同步</button><button id="sync-off" class="secondary" type="button">关闭此设备同步</button></div><p id="sync-indicator" class="hint">未连接</p><div id="sync-status" class="sync-status" role="status" aria-live="polite"></div><p>同步码相当于访问凭据，请不要公开分享。未连接时设置仍只保存在本机；同步需要联网。</p></section>
+<footer>音频由 AudioWorklet 实时生成，无固定循环。首次播放需要点击按钮；建议从低音量开始。部分手机锁屏或省电时可能暂停网页音频。本应用不保证助眠效果。</footer>
 </main>
-<script src="./ios-background.js?v=1"></script>\n<script src="./audio-engine.js?v=1"></script>
-<script>
-(() => {
-'use strict';
-const definitions=[
-{id:'white',icon:'◌',name:'白噪声',detail:'均匀覆盖各个频率 · 清晰沙沙声',level:35},
-{id:'pink',icon:'〰',name:'粉红噪声',detail:'低频更丰富 · 柔和而平衡',level:48},
-{id:'brown',icon:'●',name:'棕噪声',detail:'深沉低频 · 如远处的轰鸣',level:35},
-{id:'rain',icon:'⋰',name:'细雨',detail:'滤波雨幕与随机雨滴',level:42},
-{id:'ocean',icon:'≈',name:'海浪',detail:'缓慢起伏的低沉浪声',level:45},
-{id:'wind',icon:'∿',name:'微风',detail:'时强时弱的轻柔风声',level:38},
-{id:'fire',icon:'✦',name:'篝火',detail:'温和底噪与细小噼啪声',level:35},
-{id:'stream',icon:'≋',name:'溪流',detail:'清亮水流 · 柔和起伏的潺潺声',level:40}
-];
-const defaults={master:30,timer:0,sounds:Object.fromEntries(definitions.map(d=>[d.id,{enabled:d.id==='ocean'||d.id==='fire',level:({white:35,pink:17,brown:35,rain:8,ocean:45,wind:61,fire:28,stream:40})[d.id]}]))};
-const $=id=>document.getElementById(id);
-const clamp=(v,min,max)=>Math.min(max,Math.max(min,Number.isFinite(+v)?+v:min));
-let saved;try{saved=JSON.parse(localStorage.getItem('sleep-sounds-v1')||'null')}catch{saved=null}
-const settings={master:clamp(saved?.master??defaults.master,0,100),timer:[0,15,30,45,60,90,120,180].includes(+saved?.timer)?+saved.timer:0,sounds:Object.fromEntries(definitions.map(d=>[d.id,{enabled:saved?.sounds?.[d.id]?.enabled===undefined?defaults.sounds[d.id].enabled:saved.sounds[d.id].enabled===true,level:clamp(saved?.sounds?.[d.id]?.level??defaults.sounds[d.id].level,0,100)}]))};
-let enginePrefs;try{enginePrefs=JSON.parse(localStorage.getItem('sleep-sounds:engine:v1')||'null')}catch{enginePrefs=null}
-const prefs={mode:enginePrefs?.mode==='realtime'?'realtime':'loop',seconds:[12,30,60].includes(+enginePrefs?.seconds)?+enginePrefs.seconds:30};
-const savePrefs=()=>{try{localStorage.setItem('sleep-sounds:engine:v1',JSON.stringify(prefs))}catch{}};
-const persist=names=>{try{localStorage.setItem('sleep-sounds-v1',JSON.stringify(settings))}catch{}if(names?.length)window.dispatchEvent(new CustomEvent('sleep-sounds:changed',{detail:{names}}))};
-let context,masterGain,engine,playing=false,timerId=null,timerEnd=0,timerInterval=null,fading=false,busy=false;
-for(const d of definitions){const card=document.createElement('section');card.className='panel sound';card.id=`card-${d.id}`;card.innerHTML=`<div class="sound-head"><div class="sound-title"><span class="emoji" aria-hidden="true">${d.icon}</span><div><div class="name">${d.name}</div><div class="detail">${d.detail}</div></div></div><button type="button" class="toggle" id="toggle-${d.id}" aria-label="${d.name}开关" aria-pressed="false"></button></div><div class="level"><input type="range" id="level-${d.id}" min="0" max="100" aria-label="${d.name}音量"><output id="value-${d.id}" for="level-${d.id}"></output></div>`;$('sounds').append(card);
-$(`toggle-${d.id}`).addEventListener('click',()=>{settings.sounds[d.id].enabled=!settings.sounds[d.id].enabled;updateUI();updateAudio();persist([`${d.id}:enabled`])});
-$(`level-${d.id}`).addEventListener('input',event=>{settings.sounds[d.id].level=+event.target.value;updateUI();updateAudio();persist([`${d.id}:level`])})}
-$('master').addEventListener('input',event=>{settings.master=+event.target.value;updateUI();updateAudio();persist(['master'])});
-$('timer').addEventListener('change',event=>{settings.timer=+event.target.value;if(playing)scheduleTimer();else renderTimer();persist(['timer'])});
-$('reset').addEventListener('click',()=>{settings.master=defaults.master;for(const d of definitions)settings.sounds[d.id]={...defaults.sounds[d.id]};updateUI();updateAudio();persist(['master',...definitions.flatMap(d=>[`${d.id}:enabled`,`${d.id}:level`])])});
-function updateUI(){
- $('master').value=settings.master;$('master-value').textContent=`${settings.master}%`;
- for(const d of definitions){const s=settings.sounds[d.id],t=$(`toggle-${d.id}`);$(`card-${d.id}`).classList.toggle('active',s.enabled);t.textContent=s.enabled?'已开启':'已关闭';t.setAttribute('aria-pressed',String(s.enabled));$(`level-${d.id}`).value=s.level;$(`value-${d.id}`).textContent=`${s.level}%`;}
- $('timer').value=String(settings.timer);$('engine-mode').value=prefs.mode;$('loop-seconds').value=String(prefs.seconds);$('loop-seconds').disabled=prefs.mode==='realtime';$('loop-field').hidden=prefs.mode==='realtime';
- $('mode-note').textContent=prefs.mode==='loop'?'循环模式：预生成随机音频并重复播放；仅为已开启的声音生成音频。30 秒为默认，60 秒占用更多内存。':'实时模式：∞ 持续生成 · 无固定循环长度。AudioWorklet 在音频线程中持续计算新的采样。';
- $('play').textContent=playing?'Ⅱ 暂停播放':'▶ 开始播放';$('play').setAttribute('aria-pressed',String(playing));$('status').textContent=playing?(fading?'声音正在渐弱…':'声景播放中'):'准备好，今晚睡个好觉';
-}
-function updateAudio(){
- if(!context||!engine)return;
- const now=context.currentTime;
- for(const d of definitions){const sound=settings.sounds[d.id];if(sound.enabled){const volume=engine.ensure(d.id);volume.gain.setTargetAtTime(sound.level/100*.52,now,.07);}else if(engine.has(d.id)){engine.ensure(d.id).gain.setTargetAtTime(0,now,.07);}}
- if(!fading)masterGain.gain.setTargetAtTime(settings.master/100*.8,now,.07);
-}
-async function initializeAudio(){
- const AudioContextClass=window.AudioContext||window.webkitAudioContext;
- if(!AudioContextClass)throw Error('浏览器不支持 Web Audio API');
- if(typeof window.createSleepEngine!=='function')throw Error('声音引擎未加载，请刷新页面');
- context=new AudioContextClass();
- await context.resume();
- if(prefs.mode==='realtime'){
-  if(!context.audioWorklet||typeof AudioWorkletNode==='undefined')throw Error('此浏览器不支持 AudioWorklet，请改用循环模式');
-  await context.audioWorklet.addModule('./noise-worklet.js?v=1');
- }
- masterGain=context.createGain();masterGain.gain.value=0;
- const compressor=context.createDynamicsCompressor();compressor.threshold.value=-18;compressor.knee.value=20;compressor.ratio.value=5;compressor.attack.value=.004;compressor.release.value=.3;
- masterGain.connect(compressor).connect(context.destination);
- engine=window.createSleepEngine(context,{mode:prefs.mode,seconds:prefs.seconds,output:masterGain});
- updateAudio();
-}
-async function destroyAudio(){
- if(engine){engine.dispose();engine=null;}
- const old=context;context=null;masterGain=null;
- if(old){try{await old.close()}catch{}}
-}
-function clearTimer(){if(timerId!==null)clearTimeout(timerId);if(timerInterval!==null)clearInterval(timerInterval);timerId=null;timerInterval=null;timerEnd=0;fading=false}
-function renderTimer(){if(!playing||!timerEnd){$('timer-status').textContent=settings.timer?'点击播放后开始计时':'';return}const left=Math.max(0,Math.ceil((timerEnd-Date.now())/1000)),m=Math.floor(left/60),s=left%60;$('timer-status').textContent=`自动关闭倒计时 ${m}:${String(s).padStart(2,'0')}${fading?' · 正在渐弱':''}`}
-function scheduleTimer(){clearTimer();if(!playing||!settings.timer){renderTimer();return}const total=settings.timer*60000;timerEnd=Date.now()+total;timerInterval=setInterval(()=>{if(!playing||!context)return;const remaining=timerEnd-Date.now();if(remaining<=30000&&!fading){fading=true;masterGain.gain.cancelScheduledValues(context.currentTime);masterGain.gain.setValueAtTime(masterGain.gain.value,context.currentTime);masterGain.gain.linearRampToValueAtTime(0,context.currentTime+Math.max(0,remaining)/1000);updateUI()}if(remaining<=0){stopPlayback();return}renderTimer()},250);timerId=setTimeout(stopPlayback,total);renderTimer()}
-async function stopPlayback(){clearTimer();playing=false;window.iOSBackgroundAudio?.pause();if(context){masterGain.gain.cancelScheduledValues(context.currentTime);masterGain.gain.setTargetAtTime(0,context.currentTime,.035);setTimeout(()=>{if(context&&!playing)context.suspend().catch(()=>{})},200)}updateUI();renderTimer()}
-$('play').addEventListener('click',async()=>{
- if(busy)return;busy=true;$('play').disabled=true;
- try{if(playing)await stopPlayback();else{void window.iOSBackgroundAudio?.start();if(!context)await initializeAudio();else await context.resume();playing=true;fading=false;updateAudio();updateUI();scheduleTimer();}}
- catch(error){playing=false;clearTimer();window.iOSBackgroundAudio?.pause();$('status').textContent=`无法播放：${error.message||'请重试'}`;console.error(error);await destroyAudio();}
- finally{busy=false;$('play').disabled=false;}
-});
-async function switchEngine(){
- if(busy)return;busy=true;$('play').disabled=true;$('engine-mode').disabled=true;$('loop-seconds').disabled=true;
- const wasPlaying=playing;
- try{
-  if(context){await destroyAudio();if(wasPlaying){await initializeAudio();playing=true;updateAudio();if(fading&&timerEnd){const left=Math.max(0,(timerEnd-Date.now())/1000);masterGain.gain.setValueAtTime(settings.master/100*.8,context.currentTime);masterGain.gain.linearRampToValueAtTime(0,context.currentTime+left);}}}
-  savePrefs();updateUI();renderTimer();
- }catch(error){console.error(error);await destroyAudio();playing=false;clearTimer();prefs.mode='loop';savePrefs();updateUI();$('status').textContent=`模式切换失败：${error.message}；已改用循环模式，请重新播放。`;}
- finally{busy=false;$('play').disabled=false;$('engine-mode').disabled=false;$('loop-seconds').disabled=prefs.mode==='realtime';}
-}
-window.addEventListener('sleep-sounds:media-play',()=>{if(!playing&&!busy)$('play').click()});
-window.addEventListener('sleep-sounds:media-pause',()=>{if(playing&&!busy)$('play').click()});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&playing&&context?.state==='suspended')context.resume().catch(()=>{});});
-$('engine-mode').addEventListener('change',()=>{prefs.mode=$('engine-mode').value;switchEngine()});
-$('loop-seconds').addEventListener('change',()=>{prefs.seconds=+$('loop-seconds').value;switchEngine()});
-window.SleepSounds={ids:definitions.map(d=>d.id),readControl(name){if(name==='master'||name==='timer')return settings[name];const[id,field]=name.split(':');return settings.sounds[id]?.[field]},applyControls(changes){let timerChanged=false;for(const[name,value]of Object.entries(changes)){if(name==='master')settings.master=clamp(value,0,100);else if(name==='timer'){settings.timer=value;timerChanged=true}else{const[id,field]=name.split(':');if(settings.sounds[id]&&(field==='level'||field==='enabled'))settings.sounds[id][field]=field==='enabled'?value===true:clamp(value,0,100)}}updateUI();updateAudio();if(timerChanged){if(playing)scheduleTimer();else renderTimer()}persist([])}};
-updateUI();renderTimer();
-})();
-</script>
-<script src="./sync.js?v=1" defer></script>
+<script src="./ios-background.js?v=1"></script>
+<script src="./sleep-engine-v2.js?v=2"></script>
+<script src="./sleep-app-v2.js?v=2"></script>
+<script src="./sync.js?v=2" defer></script>
 </body>
 </html>
