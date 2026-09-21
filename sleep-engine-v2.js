@@ -7,7 +7,7 @@ window.createSleepEngine=(context,{output})=>{
  const channels=new Map();
  const smooth=(param,value)=>param.setTargetAtTime(value,context.currentTime,.055);
  function create(id,character){
-  const record={sources:[],nodes:[],oscillators:[],filters:[],gain:null,character,apply:null};
+  const record={sources:[],nodes:[],oscillators:[],gain:null,character,apply:null};
   const gain=context.createGain();gain.gain.value=0;gain.connect(output);record.gain=gain;record.nodes.push(gain);
   function source(kind,processorCharacter=50){
    const node=new AudioWorkletNode(context,'sleep-source-v2',{numberOfInputs:0,numberOfOutputs:1,outputChannelCount:[1],processorOptions:{kind,character:processorCharacter}});
@@ -20,7 +20,7 @@ window.createSleepEngine=(context,{output})=>{
   if(id==='white'||id==='pink'||id==='brown'){
    const tone=filter('lowpass',6000);
    route(id,[tone]);
-   record.apply=()=>smooth(tone.frequency, id==='brown'?280+norm()*2800:id==='pink'?550+norm()*12500:900+norm()*18000);
+   record.apply=()=>smooth(tone.frequency, id==='brown'?3080-norm()*2800:id==='pink'?550+norm()*12500:900+norm()*18000);
   } else if(id==='rain'){
    const tone=filter('highpass',800),top=filter('lowpass',8200);
    route('white',[tone,top]);route('rain-drop',[filter('bandpass',2100,.5)],character);
